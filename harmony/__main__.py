@@ -150,6 +150,12 @@ def send_command(args):
     client.disconnect(send_close=True)
     return 0
 
+def change_channel(args):
+    """Connects to the Harmony and changes channel."""
+    client = get_client(args)
+    client.change_channel(args.channel)
+    return 0
+
 def main():
     """Main method for the script."""
     parser = argparse.ArgumentParser(
@@ -217,6 +223,14 @@ def main():
         help='Specify the device id or label to which we will send the command.')
 
     command_parser.set_defaults(func=send_command)
+
+    change_channel_parser = subparsers.add_parser(
+        'change_channel', help='Change the channel.')
+
+    change_channel_parser.add_argument(
+        'channel', help='Specify the channel to send to the harmony.')
+
+    change_channel_parser.set_defaults(func=change_channel)
 
     args = parser.parse_args()
 

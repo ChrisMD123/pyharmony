@@ -118,6 +118,26 @@ class HarmonyClient(sleekxmpp.ClientXMPP):
         time.sleep(0.5)
         return True
 
+    def change_channel(self, channel):
+        """Send a channel to the Harmony Hub.
+
+        Args:
+            channel: Channel
+        """
+        iq_cmd=self.Iq()
+        iq_cmd['type']='get'
+        action_cmd = ET.Element('oa')
+        action_cmd.attrib['xmlns'] = 'connect.logitech.com'
+        action_cmd.attrib['mime'] = ('harmony.engine?changeChannel')
+        action_cmd.text = 'channel=' + str(channel) + ':timestamp=0'
+        iq_cmd.set_payload(action_cmd)
+        result=iq_cmd.send(block=True)
+        payload = result.get_payload()
+        assert len(payload)==1
+        action_cmd = payload[0]
+        return True
+
+
     def turn_off(self):
         """Turns the system off if it's on, otherwise it does nothing.
 

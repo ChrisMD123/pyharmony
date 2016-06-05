@@ -48,6 +48,9 @@ Some other commands you can invoke via command line:
         --harmony_ip my_hub_host send_command --device 'yamaha soundbar' \
         --command PowerToggle
 
+    PYTHONPATH="." python harmony --email user@example.com --password pass \
+        --harmony_ip my_hub_host change_channel 123
+
 For full argument information on the command-line tool:
 
     PYTHONPATH="." python harmony --help
