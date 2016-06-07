@@ -156,6 +156,23 @@ def change_channel(args):
     client.change_channel(args.channel)
     return 0
 
+def send_command_named(args):
+    client=get_client(args)
+    vactivity=show_current_activity(args)
+    with open("data.json",'w') as outfile:
+        json.dump(vactivity,outfile)
+    for x in vactivity['controlGroup']:
+        for y in x['function']:
+            z=y['label']
+            zz=json.loads(y['action'])
+            if z.replace(" ","").lower()==args.command.replace(" ","").lower():
+                args.device_id=zz['deviceId']
+                args.command=zz['command']
+                for zzz in range (0,int(args.repeat)):
+                    send_command(args)
+    client.disconnect(send_close=True)
+    return 0
+
 def main():
     """Main method for the script."""
     parser = argparse.ArgumentParser(
@@ -231,6 +248,18 @@ def main():
         'channel', help='Specify the channel to send to the harmony.')
 
     change_channel_parser.set_defaults(func=change_channel)
+
+    """Send_Command_named"""
+    named_parser = subparsers.add_parser(
+        'send_command_named', help='Send a generic command.')
+
+    named_parser.add_argument('command',
+        help='Named command to send to the device.')
+
+    named_parser.add_argument('repeat',
+        help='Number of times to repeat instruction', default=1)
+
+    named_parser.set_defaults(func=send_command_named)
 
     args = parser.parse_args()
 

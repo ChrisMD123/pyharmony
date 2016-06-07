@@ -48,6 +48,11 @@ Some other commands you can invoke via command line:
         --harmony_ip my_hub_host send_command --device 'yamaha soundbar' \
         --command PowerToggle
 
+    # to send commands named in the activity (usually [always?] button
+    # assignments). x=number of times to repeat the action
+    PYTHONPATH="." python harmony --email user@example.com --password pass \
+        --harmony_ip my_hub_host send_command_named "command name" x
+
     PYTHONPATH="." python harmony --email user@example.com --password pass \
         --harmony_ip my_hub_host change_channel 123
 
