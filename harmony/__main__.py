@@ -62,7 +62,7 @@ def show_current_activity(args):
     pprint(activity)
 
     client.disconnect(send_close=True)
-    return 0
+    return activity
 
 def sync(args):
     """Connects to the Harmony and syncs it.
@@ -159,8 +159,7 @@ def change_channel(args):
 def send_command_named(args):
     client=get_client(args)
     vactivity=show_current_activity(args)
-    with open("data.json",'w') as outfile:
-        json.dump(vactivity,outfile)
+
     for x in vactivity['controlGroup']:
         for y in x['function']:
             z=y['label']
