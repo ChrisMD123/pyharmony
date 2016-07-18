@@ -127,6 +127,9 @@ def send_command(args):
 
     config = client.get_config()
 
+    if args.device is None and args.device_id is None
+        seond_command_named(args)
+
     device = args.device if args.device_id is None else args.device_id
 
     device_numeric = None
@@ -224,13 +227,28 @@ def main():
 
     turn_off_parser.set_defaults(func=turn_off)
 
+    #    """Send_Command_named"""
+    #    named_parser = subparsers.add_parser(
+    #        'send_command_named', help='Send a generic command.')
+    #
+    #    named_parser.add_argument('--command', required=True,
+    #        help='Named command to send to the device.')
+    #
+    #    named_parser.add_argument('--repeat', default=1,
+    #        help='Number of times to repeat instruction')
+    #
+    #    named_parser.set_defaults(func=send_command_named)
+
     command_parser = subparsers.add_parser(
         'send_command', help='Send a simple command.')
 
     command_parser.add_argument('--command',
         help='IR Command to send to the device.', required=True)
 
-    device_arg_group = command_parser.add_mutually_exclusive_group(required=True)
+    commad.parser.add_argument('--repeat', default=1,
+        help='Number of times to repeat command')
+
+    device_arg_group = command_parser.add_mutually_exclusive_group(required=False)
 
     device_arg_group.add_argument('--device_id',
         help='Specify the device id to which we will send the command.')
@@ -247,18 +265,6 @@ def main():
         'channel', help='Specify the channel to send to the harmony.')
 
     change_channel_parser.set_defaults(func=change_channel)
-
-    """Send_Command_named"""
-    named_parser = subparsers.add_parser(
-        'send_command_named', help='Send a generic command.')
-
-    named_parser.add_argument('command',
-        help='Named command to send to the device.')
-
-    named_parser.add_argument('repeat',
-        help='Number of times to repeat instruction', default=1)
-
-    named_parser.set_defaults(func=send_command_named)
 
     args = parser.parse_args()
 
