@@ -135,7 +135,7 @@ def send_command(args):
                     args.device_id=zz['deviceId']
                     args.command=zz['command']
                     for zzz in range (0,int(args.repeat)):
-                        send_command(args)
+                        client.send_command(args.device_id, args.command)
         client.disconnect(send_close=True)
         return 0
 
@@ -221,18 +221,6 @@ def main():
         'turn_off', help='Send a turn off command to the harmony.')
 
     turn_off_parser.set_defaults(func=turn_off)
-
-    #    """Send_Command_named"""
-    #    named_parser = subparsers.add_parser(
-    #        'send_command_named', help='Send a generic command.')
-    #
-    #    named_parser.add_argument('--command', required=True,
-    #        help='Named command to send to the device.')
-    #
-    #    named_parser.add_argument('--repeat', default=1,
-    #        help='Number of times to repeat instruction')
-    #
-    #    named_parser.set_defaults(func=send_command_named)
 
     command_parser = subparsers.add_parser(
         'send_command', help='Send a simple command.')
