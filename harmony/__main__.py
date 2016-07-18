@@ -125,10 +125,22 @@ def send_command(args):
     """Connects to the Harmony and send a simple command."""
     client = get_client(args)
 
+    vactivity=show_current_activity(args)
+
     config = client.get_config()
 
     if args.device is None and args.device_id is None
-        seond_command_named(args)
+        for x in vactivity['controlGroup']:
+            for y in x['function']:
+                z=y['label']
+                zz=json.loads(y['action'])
+                if z.replace(" ","").lower()==args.command.replace(" ","").lower():
+                    args.device_id=zz['deviceId']
+                    args.command=zz['command']
+                    for zzz in range (0,int(args.repeat)):
+                        send_command(args)
+        client.disconnect(send_close=True)
+        return 0
 
     device = args.device if args.device_id is None else args.device_id
 
@@ -157,22 +169,6 @@ def change_channel(args):
     """Connects to the Harmony and changes channel."""
     client = get_client(args)
     client.change_channel(args.channel)
-    return 0
-
-def send_command_named(args):
-    client=get_client(args)
-    vactivity=show_current_activity(args)
-
-    for x in vactivity['controlGroup']:
-        for y in x['function']:
-            z=y['label']
-            zz=json.loads(y['action'])
-            if z.replace(" ","").lower()==args.command.replace(" ","").lower():
-                args.device_id=zz['deviceId']
-                args.command=zz['command']
-                for zzz in range (0,int(args.repeat)):
-                    send_command(args)
-    client.disconnect(send_close=True)
     return 0
 
 def main():
