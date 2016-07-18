@@ -125,11 +125,8 @@ def send_command(args):
     """Connects to the Harmony and send a simple command."""
     client = get_client(args)
 
-    vactivity=show_current_activity(args)
-
-    config = client.get_config()
-
-    if args.device is None and args.device_id is None
+    if args.device is None and args.device_id is None:
+        vactivity=show_current_activity(args)
         for x in vactivity['controlGroup']:
             for y in x['function']:
                 z=y['label']
@@ -141,6 +138,8 @@ def send_command(args):
                         send_command(args)
         client.disconnect(send_close=True)
         return 0
+
+    config = client.get_config()
 
     device = args.device if args.device_id is None else args.device_id
 
@@ -241,7 +240,7 @@ def main():
     command_parser.add_argument('--command',
         help='IR Command to send to the device.', required=True)
 
-    commad.parser.add_argument('--repeat', default=1,
+    command_parser.add_argument('--repeat', default=1,
         help='Number of times to repeat command')
 
     device_arg_group = command_parser.add_mutually_exclusive_group(required=False)
