@@ -42,16 +42,13 @@ Some other commands you can invoke via command line:
         --harmony_ip my_hub_host turn_off
 
     # to send device commands, look in show_config for the device and
-    # command name, you can use either the device id or label with --device
+    # command name, you can use either the device id or label with --device.
+    # If device is not included, function searches for the command name within
+    # the current activity.
     #
     PYTHONPATH="." python harmony --email user@example.com --password pass \
         --harmony_ip my_hub_host send_command --device 'yamaha soundbar' \
-        --command PowerToggle
-
-    # to send commands named in the activity (usually [always?] button
-    # assignments). x=number of times to repeat the action
-    PYTHONPATH="." python harmony --email user@example.com --password pass \
-        --harmony_ip my_hub_host send_command_named "command name" x
+        --command PowerToggle --repeat x
 
     PYTHONPATH="." python harmony --email user@example.com --password pass \
         --harmony_ip my_hub_host change_channel 123
