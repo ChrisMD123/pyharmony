@@ -126,7 +126,9 @@ def send_command(args):
     client = get_client(args)
 
     if args.device is None and args.device_id is None:
-        vactivity=show_current_activity(args)
+        current_activity_id = client.get_current_activity()
+        vactivity = [x for x in config['activity'] if int(x['id']) == current_activity_id][0]
+        #vactivity=show_current_activity(args)
         for x in vactivity['controlGroup']:
             for y in x['function']:
                 z=y['label']
