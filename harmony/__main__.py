@@ -161,7 +161,8 @@ def send_command(args):
 
     device_id = int(device_config[0]['id'])
 
-    client.send_command(device_id, args.command)
+    for zzz in range (0,int(args.repeat)):
+        client.send_command(device_id, args.command)
 
     client.disconnect(send_close=True)
     return 0
