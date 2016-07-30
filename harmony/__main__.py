@@ -38,9 +38,12 @@ def pprint(obj):
 
 def get_client(args):
     """Connect to the Harmony and return a Client instance."""
-    token = login_to_logitech(args)
+    #if args.token_init:
+    #    token=args.token_init
+    #else:
+    #    token = login_to_logitech(args)
     client = harmony_client.create_and_connect_client(
-        args.harmony_ip, args.harmony_port, token)
+        args.harmony_ip, args.harmony_port, "token")
     return client
 
 def show_config(args):
@@ -124,11 +127,10 @@ def start_activity(args):
 def send_command(args):
     """Connects to the Harmony and send a simple command."""
     client = get_client(args)
-
+    config = client.get_config()
     if args.device is None and args.device_id is None:
         current_activity_id = client.get_current_activity()
         vactivity = [x for x in config['activity'] if int(x['id']) == current_activity_id][0]
-        #vactivity=show_current_activity(args)
         for x in vactivity['controlGroup']:
             for y in x['function']:
                 z=y['label']
@@ -140,8 +142,6 @@ def send_command(args):
                         client.send_command(args.device_id, args.command)
         client.disconnect(send_close=True)
         return 0
-
-    config = client.get_config()
 
     device = args.device if args.device_id is None else args.device_id
 
@@ -177,10 +177,12 @@ def main():
     """Main method for the script."""
     parser = argparse.ArgumentParser(
         description='pyharmony utility script',
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        fromfile_prefix_chars='@')
 
     # Required flags go here.
     required_flags = parser.add_argument_group('required arguments')
+
     required_flags.add_argument('--email', required=True, help=(
         'Logitech username in the form of an email address.'))
     required_flags.add_argument(
@@ -195,6 +197,9 @@ def main():
                      for level in [10, 20, 30, 40, 50])
     parser.add_argument('--loglevel', default='INFO', choices=loglevels.keys(),
         help='Logging level to print to the console.')
+
+    parser.add_argument('--token_init',
+    help='Token (populated from config file)')
 
     subparsers = parser.add_subparsers()
 
